@@ -17,7 +17,7 @@ export default function VideoIdPage({ params }: { params: { id: string } }) {
   if (error) return "An error has occurred: " + error.message;
 
   return (
-    <main className="flex w-4/5 flex-1 flex-col gap-4">
+    <main className="flex w-full sm:w-4/5 flex-1 flex-col gap-4">
       <Card className="h-fit w-full">
         <CardHeader>
           <CardTitle className="flex items-center gap-4">
