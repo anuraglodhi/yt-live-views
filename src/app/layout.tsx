@@ -4,6 +4,8 @@ import "./globals.css";
 import { QueryProvider } from "@/components/providers/react-query-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { ModeToggle } from "@/components/theme-toggle";
+import { Github } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,9 +34,16 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <div className="flex h-full w-full flex-col items-center">
-              <header className="flex h-[100px] w-full flex-shrink-0 items-center px-8 justify-between">
+              <header className="flex h-[100px] w-full flex-shrink-0 items-center justify-between px-8">
                 <h1 className="text-2xl font-semibold">YT Live views</h1>
-                <ModeToggle />
+                <div className="flex gap-2">
+                  <ModeToggle />
+                  <a href="https://github.com/anuraglodhi/yt-live-views">
+                    <Button variant="outline" className="aspect-square p-2">
+                      <Github className="text-lg" />
+                    </Button>
+                  </a>
+                </div>
               </header>
               {children}
             </div>
