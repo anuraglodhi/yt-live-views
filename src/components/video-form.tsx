@@ -46,7 +46,7 @@ export const VideoForm = () => {
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent>
+            <CardContent className="flex flex-col gap-4">
               <FormField
                 control={form.control}
                 name="searchQuery"
@@ -62,50 +62,41 @@ export const VideoForm = () => {
                   </FormItem>
                 )}
               />
+              {videos.length > 0 &&
+                <div className="flex flex-col gap-4">
+                  {videos.map((video) => (
+                    <div
+                      key={video.id.videoId}
+                      className="flex w-full cursor-pointer gap-8"
+                      onClick={() => router.push(`/video/${video.id.videoId}`)}
+                    >
+                      <Image
+                        alt={video.snippet.title}
+                        src={video.snippet.thumbnails.high.url}
+                        width={video.snippet.thumbnails.high.width}
+                        height={video.snippet.thumbnails.high.height}
+                        className="h-[90px] w-[120px] rounded-md"
+                      ></Image>
+                      <div className="flex flex-col justify-center gap-2">
+                        <h3 className="text-lg">{video.snippet.title}</h3>
+                        <span className="text-md text-muted-foreground">
+                          {video.snippet.channelTitle}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              }
             </CardContent>
             <CardFooter>
-              {form.formState.isLoading ? (
+              {form.formState.isSubmitting ? (
                 <Loader className="h-4 w-4 animate-spin" />
               ) : (
-                <Button type="submit">Search</Button>
+                <Button type="submit" disabled={form.getValues().searchQuery === ""}>Search</Button>
               )}
             </CardFooter>
           </form>
         </Form>
-      </Card>
-      <Card className="h-fit w-full">
-        <CardHeader>
-          <CardTitle>Found videos</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {videos.length == 0 ? (
-            <span>No videos found</span>
-          ) : (
-            <div className="flex flex-col gap-4">
-              {videos.map((video) => (
-                <div
-                  key={video.id.videoId}
-                  className="flex w-full gap-8 cursor-pointer"
-                  onClick={() => router.push(`/video/${video.id.videoId}`)}
-                >
-                  <Image
-                    alt={video.snippet.title}
-                    src={video.snippet.thumbnails.high.url}
-                    width={video.snippet.thumbnails.high.width}
-                    height={video.snippet.thumbnails.high.height}
-                    className="h-[90px] w-[120px] rounded-md"
-                  ></Image>
-                  <div className="flex flex-col justify-center gap-2">
-                    <h3 className="text-lg">{video.snippet.title}</h3>
-                    <span className="text-md text-muted-foreground">
-                      {video.snippet.channelTitle}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </CardContent>
       </Card>
     </>
   );

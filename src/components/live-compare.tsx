@@ -23,9 +23,9 @@ const config = {
 const formatter = new Intl.NumberFormat("en-US", { notation: "compact" });
 const commas = new Intl.NumberFormat("en-Us");
 
-type viewData = { time: string; views: number };
+type viewData = { time: string; difference: number };
 
-export const LiveViews = ({ id }: { id: string }) => {
+export const LiveCompare = ({ id1, id2 }: { id1: string; id2: string }) => {
   const [data, setData] = useState<viewData[]>([]);
   const [domain, setDomain] = useState<number[]>([]);
   let min = useRef<number>(+Infinity);
@@ -34,17 +34,24 @@ export const LiveViews = ({ id }: { id: string }) => {
   async function fetchViews() {
     const time = new Date(Date.now()).toTimeString().split(" ")[0];
 
-    const res = await fetch(`/api/v1/video/views?id=${id}`, {
+    const res = await fetch(`/api/v1/video/compare?id=${id1}%2C${id2}`, {
       cache: "no-store",
     });
     const data = await res.json();
+    // console.log(data);
+
+    let difference =
+      data[0].statistics.viewCount - data[1].statistics.viewCount;
     setData((prev) => [
-      { time: time, views: data.statistics.viewCount },
+      {
+        time: time,
+        difference: difference,
+      },
       ...prev,
     ]);
 
-    min.current = Math.min(min.current, data.statistics.viewCount);
-    max.current = Math.max(max.current, data.statistics.viewCount);
+    min.current = Math.min(min.current, difference);
+    max.current = Math.max(max.current, difference);
     setDomain(getDomain([min.current, max.current]));
   }
 
@@ -63,8 +70,8 @@ export const LiveViews = ({ id }: { id: string }) => {
   return (
     <>
       <div className="flex items-center justify-center text-lg">
-        Views: &nbsp;
-        {commas.format(data[data.length - 1]?.views || 0)}
+        Difference: &nbsp;
+        {commas.format(data[data.length - 1]?.difference || 0)}
       </div>
       <ChartContainer config={config} className="h-[450px]">
         <AreaChart data={data}>
@@ -77,7 +84,7 @@ export const LiveViews = ({ id }: { id: string }) => {
             domain={getDomain(domain)}
           />
           <XAxis reversed dataKey="time" />
-          <Area dataKey="views" />
+          <Area dataKey="difference" />
           <ChartTooltip content={<Tooltip />} />
         </AreaChart>
       </ChartContainer>
@@ -94,7 +101,8 @@ const Tooltip = ({
   return (
     <div className="rounded-md border border-slate-100 px-4 py-2">
       <div>
-        Views: {commas.format(Number.parseInt(payload[0].value!.toString()))}
+        Difference:{" "}
+        {commas.format(Number.parseInt(payload[0].value!.toString()))}
       </div>
       <div>at {label}</div>
     </div>

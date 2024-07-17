@@ -23,9 +23,9 @@ export default function VideoIdPage({ params }: { params: { id: string } }) {
           <CardTitle className="flex items-center gap-4">
             <Image
               alt={data.snippet.title}
-              src={data.snippet.thumbnails.maxres.url}
-              width={data.snippet.thumbnails.maxres.width}
-              height={data.snippet.thumbnails.maxres.height}
+              src={data.snippet.thumbnails.high.url}
+              width={data.snippet.thumbnails.high.width}
+              height={data.snippet.thumbnails.high.height}
               className="w-[200px] rounded-md"
             ></Image>
             <div className="flex flex-col gap-2">
