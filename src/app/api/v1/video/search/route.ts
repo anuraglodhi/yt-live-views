@@ -10,7 +10,7 @@ export const GET = async (req: NextRequest) => {
 
   try {
     const res = await fetch(
-      `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${searchQuery}&key=${process.env.YOUTUBE_API_KEY}`,
+      `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=5&q=${searchQuery}&key=${process.env.YOUTUBE_API_KEY}&type=video`,
     );
     const data = await res.json();
     return Response.json(data.items, { status: 200 });
