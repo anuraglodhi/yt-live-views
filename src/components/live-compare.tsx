@@ -71,7 +71,7 @@ export const LiveCompare = ({ id1, id2 }: { id1: string; id2: string }) => {
     <>
       <div className="flex items-center justify-center text-lg">
         Difference: &nbsp;
-        {commas.format(data[data.length - 1]?.difference || 0)}
+        {commas.format(data[0]?.difference || 0)}
       </div>
       <ChartContainer config={config} className="h-[450px]">
         <AreaChart data={data}>

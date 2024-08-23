@@ -60,11 +60,14 @@ export const LiveViews = ({ id }: { id: string }) => {
     return [domain[0], domain[1] + margin];
   }
 
+  // console.log(data[0]?.views || 0);
+
+
   return (
     <>
       <div className="flex items-center justify-center text-lg">
         Views: &nbsp;
-        {commas.format(data[data.length - 1]?.views || 0)}
+        {commas.format(data[0]?.views || 0)}
       </div>
       <ChartContainer config={config} className="h-[450px]">
         <AreaChart data={data}>
